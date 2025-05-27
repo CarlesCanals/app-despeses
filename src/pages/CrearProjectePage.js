@@ -25,20 +25,26 @@ export default function CrearProjectePage() {
     };
 
     return (
-        <div>
-        <h1>Crear Projecte</h1>
-        <form onSubmit={handleSubmit}>
-            <label>
-            Nom del projecte:
-            <input
-                type="text"
-                value={nom}
-                onChange={(e) => setNom(e.target.value)}
-                required
-            />
-            </label>
-            <button type="submit">Crear</button>
-        </form>
+        <div className="register-container">
+            <form className="register-form" onSubmit={handleSubmit}>
+                <h1 className="form-title">Crear Projecte</h1>
+                <div className="form-group">
+                    <label className="form-label" htmlFor="nom">
+                        Nom del projecte:
+                    </label>
+                    <input
+                        id="nom"
+                        className="form-control"
+                        type="text"
+                        value={nom}
+                        onChange={(e) => setNom(e.target.value)}
+                        required
+                    />
+                </div>
+                <button className="btn-primary" type="submit">
+                    Crear
+                </button>
+            </form>
         </div>
     );
 }

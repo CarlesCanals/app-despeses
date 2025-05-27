@@ -25,7 +25,14 @@ const EliminarUsuari = ({ userId }) => {
     };
 
     return (
-        <button className="btn btn-danger" onClick={eliminarUsuari}>
+        <button
+            className="btn btn-danger"
+            onClick={() => {
+                if (window.confirm('Estàs segur que vols eliminar aquest usuari?')) {
+                    eliminarUsuari();
+                }
+            }}
+        >
             Eliminar
         </button>
     );

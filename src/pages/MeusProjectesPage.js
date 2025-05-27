@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
+import '../index.css'; // Assuming you have some styles in index.css
 
 export default function MeusProjectesPage() {
     const { currentUser } = useAuth();
@@ -24,19 +25,19 @@ export default function MeusProjectesPage() {
     }, [currentUser]);
 
     return (
-        <div>
-        <h1>Els meus projectes</h1>
-        {projectes.length === 0 ? (
-            <p>No tens cap projecte.</p>
-        ) : (
-            <ul>
-            {projectes.map((p) => (
-                <li key={p.id}>
-                <Link to={`/projecte/${p.id}`}>{p.nom}</Link>
-                </li>
-            ))}
-            </ul>
-        )}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <center><h1>Els meus projectes</h1></center>
+            {projectes.length === 0 ? (
+                <p>No tens cap projecte.</p>
+            ) : (
+                <ul className="list-group" style={{ width: '90%' }}>
+                    {projectes.map((p) => (
+                        <li key={p.id} className="list-group-item">
+                            <Link to={`/projecte/${p.id}`}>{p.nom}</Link>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }

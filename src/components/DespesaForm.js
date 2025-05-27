@@ -9,7 +9,8 @@ import {
     updateDoc,
     } from 'firebase/firestore';
 
-    export default function DespesaForm({ projectId, participants, onSaved }) {
+    export default function DespesaForm({ projectId, participants, onSaved, initialData = null, editId = null }) {
+
     const { currentUser } = useAuth();
 
     const [fields, set] = useState({
@@ -23,20 +24,25 @@ import {
 
     // Inicialitza el formulari
     useEffect(() => {
+    if (initialData) {
+        set({
+        concepte: initialData.concepte,
+        quantia: initialData.quantia,
+        pagatPer: initialData.pagatPer,
+        divideix: initialData.divideix,
+        });
+        setTotsSeleccionats(initialData.divideix.length === participants.length);
+    } else {
         set({
         concepte: '',
         quantia: '',
         pagatPer: currentUser.uid,
         divideix: participants.map(p => p.uid),
         });
-
-        // Calculate and log the amount each participant has to pay
-        if (participants.length > 0) {
-            const amountPerParticipant = parseFloat(fields.quantia || 0) / participants.length;
-            console.log('Quantitat per participant:', amountPerParticipant.toFixed(2));
-        }
         setTotsSeleccionats(true);
-    }, [currentUser, participants]);
+    }
+    }, [initialData, currentUser, participants]);
+
 
     const handleChange = (e) =>
         set(f => ({ ...f, [e.target.name]: e.target.value }));
@@ -60,20 +66,26 @@ import {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        await addDoc(collection(db, 'projects', projectId, 'despeses'), {
-        ...fields,
-        quantia: parseFloat(fields.quantia),
-        createdAt: serverTimestamp(),
-        });
+        const data = {
+            ...fields,
+            quantia: parseFloat(fields.quantia),
+            createdAt: serverTimestamp(),
+        };
+
+        if (editId) {
+            const ref = doc(db, 'projects', projectId, 'despeses', editId);
+            await updateDoc(ref, data);
+        } else {
+            await addDoc(collection(db, 'projects', projectId, 'despeses'), data);
+        }
 
         await updateDoc(doc(db, 'projects', projectId), {
-        participants: Array.from(
-            new Set([...participants.map(p => p.uid), currentUser.uid])
-        ),
+            participants: Array.from(new Set([...participants.map(p => p.uid), currentUser.uid])),
         });
 
         onSaved();
-};
+    };
+
 
 return (
     <form className="register-form" onSubmit={handleSubmit}>
@@ -147,8 +159,9 @@ return (
         </fieldset>
 
         <button className="submit-button" type="submit">
-            Desar
+            {editId ? 'Actualitzar' : 'Desar'}
         </button>
+
     </form>
 );
 }
