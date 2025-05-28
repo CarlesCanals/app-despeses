@@ -1,70 +1,56 @@
-# Getting Started with Create React App
+# 💸 Aplicació de Despeses per Projectes
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aquesta aplicació permet gestionar **projectes compartits amb despeses associades** entre diversos usuaris. Els usuaris poden **registrar-se i autenticar-se mitjançant Firebase**, crear projectes, afegir participants i repartir despeses de manera clara i senzilla.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🔐 Autenticació
 
-### `npm start`
+L'aplicació utilitza **Firebase Authentication** per gestionar els usuaris:
+- Registre d'usuari
+- Inici de sessió
+- Tancament de sessió
+- Accés protegit a les pàgines internes
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🧩 Funcionalitats principals
 
-### `npm test`
+### ✅ Projectes
+- Creació de projectes amb un **nom** i selecció de **participants** (usuaris de la base de dades).
+- Cada projecte és visible només per als **participants**.
+- Edició del projecte: canvi de nom i gestió de participants.
+- Eliminació del projecte (amb confirmació).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### ✅ Despeses
+- A cada projecte es poden afegir despeses amb:
+  - **Concepte** (descripció)
+  - **Quantia**
+  - **Pagat per** (usuari responsable del pagament)
+  - **Dividir entre** (checkbox amb usuaris participants)
+- Càlcul automàtic de la part proporcional per cada participant.
+- Possibilitat d’**editar o eliminar despeses**.
 
-### `npm run build`
+### ✅ Usuaris
+- Visualització en taula dels usuaris registrats.
+- Possibilitat d'eliminar usuaris (opcionalment amb control d'administrador).
+- A cada projecte, només es poden seleccionar com a participants usuaris ja registrats.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🔧 Estructura tècnica
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **React** per la interfície d'usuari.
+- **React Router** per la navegació entre pàgines.
+- **Firebase** (Firestore i Auth) com a backend.
+- Estils personalitzats + Bootstrap (si escau).
+- Components modulars: `NavBar`, `Footer`, `DespesaForm`, `TaulaUsuaris`, etc.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🚀 Instal·lació
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+git clone https://github.com/el-teu-usuari/gestor-despeses.git
+cd gestor-despeses
+npm install
