@@ -11,9 +11,6 @@ import MeusProjectesPage from './pages/MeusProjectesPage';
 import UsuarisPage from './pages/UsuarisPage';
 import EditarProjectePage from './pages/EditarProjectePage';
 
-<Route path="/editar-projecte/:projectId" element={<ProtectedRoute><EditarProjectePage /></ProtectedRoute>} />
-
-
 function App() {
   return (
     <Router>

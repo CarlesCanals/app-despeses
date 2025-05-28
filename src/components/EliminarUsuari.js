@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { getFirestore, doc, deleteDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
@@ -36,6 +37,9 @@ const EliminarUsuari = ({ userId }) => {
             Eliminar
         </button>
     );
+};
+EliminarUsuari.propTypes = {
+    userId: PropTypes.string.isRequired,
 };
 
 export default EliminarUsuari;

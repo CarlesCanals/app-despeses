@@ -1,4 +1,3 @@
-// src/components/EditarUsuari.js
 
 import React, { useState } from 'react';
 import { doc, updateDoc, getFirestore } from 'firebase/firestore';
