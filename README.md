@@ -51,6 +51,6 @@ L'aplicació utilitza **Firebase Authentication** per gestionar els usuaris:
 ## 🚀 Instal·lació
 
 ```bash
-git clone https://github.com/el-teu-usuari/gestor-despeses.git
-cd gestor-despeses
+git clone https://github.com/CarlesCanals/app-despeses.git
+cd app-despeses
 npm install
