@@ -16,7 +16,7 @@ export default function Login() {
         await login(emailRef.current.value, passwordRef.current.value);
         navigate('/');
         } catch {
-        setError('Error al iniciar sessió');
+        setError('Error en iniciar sessió');
         }
     }
 

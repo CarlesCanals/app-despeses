@@ -13,7 +13,6 @@ import DespesaForm from '../components/DespesaForm';
 import Footer from '../components/Footer';
 
 export default function ProjectePage() {
-    // afegeix al principi
     const [editantDespesa, setEditantDespesa] = useState(null);
     const { projectId } = useParams();
     const [projecte, setProjecte] = useState(null);
@@ -57,7 +56,10 @@ export default function ProjectePage() {
     if (!projecte) return <p>Carregant projecte...</p>;
 
     // Convertim uids a noms per mostrar correctament
-    const nomUsuari = (uid) => usuaris.find(u => u.uid === uid)?.name || uid;
+    const nomUsuari = (uid) => {
+        const usuari = usuaris.find(u => u.uid === uid);
+        return usuari ? usuari.name : '';
+    };
 
     return (
         <div className="container mt-4" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -74,7 +76,7 @@ export default function ProjectePage() {
                                 <th>Concepte</th>
                                 <th>Quantia</th>
                                 <th>Pagat per</th>
-                                <th>Perticipants</th>
+                                <th>Participants</th>
                                 <th>Accions</th>
                             </tr>
                         </thead>
@@ -82,7 +84,7 @@ export default function ProjectePage() {
                             {despeses.map(d => (
                                 <tr key={d.id}>
                                     <td>{d.concepte}</td>
-                                    <td>{d.quantia.toFixed(2)}</td>
+                                    <td>{parseFloat(d.quantia).toFixed(2)}</td>
                                     <td>{nomUsuari(d.pagatPer)}</td>
                                     <td>
                                         {d.divideix.map(uid => {
@@ -96,20 +98,20 @@ export default function ProjectePage() {
                                         })}
                                     </td>
                                     <td>
-                                    <center>
-                                        <button
-                                        className="btn btn-secondary btn-sm me-1"
-                                        onClick={() => setEditantDespesa(d)}
-                                        >
-                                        Edita
-                                        </button>
-                                        &nbsp;&nbsp;&nbsp;<button
-                                        className="btn btn-danger btn-sm"
-                                        onClick={() => eliminarDespesa(d.id)}
-                                        >
-                                        Elimina
-                                        </button>
-                                    </center>
+                                        <center>
+                                            <button
+                                                className="btn btn-secondary btn-sm me-1"
+                                                onClick={() => setEditantDespesa(d)}
+                                            >
+                                                Edita
+                                            </button>&nbsp;&nbsp;&nbsp;
+                                            <button
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => eliminarDespesa(d.id)}
+                                            >
+                                                Elimina
+                                            </button>
+                                        </center>
                                     </td>
                                 </tr>
                             ))}
@@ -120,7 +122,7 @@ export default function ProjectePage() {
 
             <center>
                 <h1 className="mb-4">Projecte: {projecte.nom}</h1>
-                <h2>Nova despesa</h2>
+                <h2>{editantDespesa ? 'Actualitza despesa' : 'Nova despesa'}</h2>
             </center>
             <DespesaForm
                 projectId={projectId}
