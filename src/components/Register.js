@@ -34,8 +34,10 @@ export default function Register() {
         } catch (error) {
             if (error.code === "auth/email-already-in-use") {
                 setError("Aquest email ja està registrat.");
+            } else if (error.code === "auth/invalid-email") {
+                setError("Email no vàlid.");   
             } else {
-                setError("Error al crear el compte");
+                setError("Error en crear el compte");
             }
             console.error(error);
         }

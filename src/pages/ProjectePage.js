@@ -10,8 +10,11 @@ import {
     onSnapshot,
 } from 'firebase/firestore';
 import DespesaForm from '../components/DespesaForm';
+import Footer from '../components/Footer';
 
 export default function ProjectePage() {
+    // afegeix al principi
+    const [editantDespesa, setEditantDespesa] = useState(null);
     const { projectId } = useParams();
     const [projecte, setProjecte] = useState(null);
     const [despeses, setDespeses] = useState([]);
@@ -57,16 +60,7 @@ export default function ProjectePage() {
     const nomUsuari = (uid) => usuaris.find(u => u.uid === uid)?.name || uid;
 
     return (
-        <div className="container mt-4">
-            <center>
-                <h1 className="mb-4">Projecte: {projecte.nom}</h1>
-                <h2>Nova despesa</h2>
-            </center>
-            <DespesaForm
-                projectId={projectId}
-                participants={usuaris} // <- ara passen tots els usuaris
-                onSaved={() => {}}
-            />
+        <div className="container mt-4" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
             <center>
                 <h2 className="mt-5">Llista de despeses</h2>
@@ -78,9 +72,9 @@ export default function ProjectePage() {
                         <thead className="thead-dark">
                             <tr>
                                 <th>Concepte</th>
-                                <th>Quantia (€)</th>
+                                <th>Quantia</th>
                                 <th>Pagat per</th>
-                                <th>Dividit entre</th>
+                                <th>Perticipants</th>
                                 <th>Accions</th>
                             </tr>
                         </thead>
@@ -102,12 +96,20 @@ export default function ProjectePage() {
                                         })}
                                     </td>
                                     <td>
-                                        <center><button
-                                            className="btn btn-danger btn-sm"
-                                            onClick={() => eliminarDespesa(d.id)}
+                                    <center>
+                                        <button
+                                        className="btn btn-secondary btn-sm me-1"
+                                        onClick={() => setEditantDespesa(d)}
                                         >
-                                            Eliminar
-                                        </button></center>
+                                        Edita
+                                        </button>
+                                        &nbsp;&nbsp;&nbsp;<button
+                                        className="btn btn-danger btn-sm"
+                                        onClick={() => eliminarDespesa(d.id)}
+                                        >
+                                        Elimina
+                                        </button>
+                                    </center>
                                     </td>
                                 </tr>
                             ))}
@@ -115,6 +117,20 @@ export default function ProjectePage() {
                     </table>
                 </div>
             )}
+
+            <center>
+                <h1 className="mb-4">Projecte: {projecte.nom}</h1>
+                <h2>Nova despesa</h2>
+            </center>
+            <DespesaForm
+                projectId={projectId}
+                participants={usuaris}
+                onSaved={() => setEditantDespesa(null)}
+                initialData={editantDespesa}
+                editId={editantDespesa?.id}
+            />
+            <div style={{ height: '100px' }}></div>
+            <Footer />           
         </div>
     );
 }

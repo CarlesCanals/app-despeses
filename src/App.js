@@ -7,7 +7,12 @@ import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import CrearProjectePage from './pages/CrearProjectePage';
 import ProjectePage from './pages/ProjectePage'; // aquest el generarem després
-import MeusProjectesPage from './pages/MeusProjectesPage'
+import MeusProjectesPage from './pages/MeusProjectesPage';
+import UsuarisPage from './pages/UsuarisPage';
+import EditarProjectePage from './pages/EditarProjectePage';
+
+<Route path="/editar-projecte/:projectId" element={<ProtectedRoute><EditarProjectePage /></ProtectedRoute>} />
+
 
 function App() {
   return (
@@ -20,6 +25,8 @@ function App() {
           <Route path="/crear-projecte" element={<ProtectedRoute><CrearProjectePage /></ProtectedRoute>} />
           <Route path="/meus-projectes" element={<ProtectedRoute><MeusProjectesPage /></ProtectedRoute>} />
           <Route path="/projecte/:projectId" element={<ProtectedRoute><ProjectePage /></ProtectedRoute>} />
+          <Route path="/editar-projecte/:projectId" element={<ProtectedRoute><EditarProjectePage /></ProtectedRoute>} />
+          <Route path="/usuaris" element={<ProtectedRoute><UsuarisPage /></ProtectedRoute>} />
           <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
         </Routes>
       </AuthProvider>
