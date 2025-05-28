@@ -1,50 +1,103 @@
-// src/pages/CrearProjectePage.js
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  getDocs
+} from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 export default function CrearProjectePage() {
-    const { currentUser } = useAuth();
-    const [nom, setNom] = useState('');
-    const navigate = useNavigate();
+  const { currentUser } = useAuth();
+  const [nom, setNom] = useState('');
+  const [usuaris, setUsuaris] = useState([]);
+  const [participants, setParticipants] = useState([]);
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  // Carrega tots els usuaris de la base de dades
+  useEffect(() => {
+    const carregarUsuaris = async () => {
+      const snapshot = await getDocs(collection(db, 'usuaris'));
+      const usuarisList = snapshot.docs.map(doc => ({
+        uid: doc.id,
+        ...doc.data(),
+      }));
 
-        const docRef = await addDoc(collection(db, 'projects'), {
-        nom,
-        creatPer: currentUser.uid,
-        createdAt: serverTimestamp(),
-        participants: [currentUser.uid],
-        });
+      setUsuaris(usuarisList);
 
-        navigate(`/projecte/${docRef.id}`);
+      // Afegeix l’usuari actual com a participant per defecte
+      setParticipants([currentUser.uid]);
     };
 
-    return (
-        <div className="register-container">
-            <form className="register-form" onSubmit={handleSubmit}>
-                <h1 className="form-title">Crear Projecte</h1>
-                <div className="form-group">
-                    <label className="form-label" htmlFor="nom">
-                        Nom del projecte:
-                    </label>
+    carregarUsuaris();
+  }, [currentUser]);
+
+  // Afegeix o elimina un participant
+  const toggleParticipant = (uid) => {
+    if (uid === currentUser.uid) return; // no permet desmarcar-se a si mateix
+    setParticipants(prev =>
+      prev.includes(uid)
+        ? prev.filter(id => id !== uid)
+        : [...prev, uid]
+    );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const docRef = await addDoc(collection(db, 'projects'), {
+      nom,
+      creatPer: currentUser.uid,
+      createdAt: serverTimestamp(),
+      participants: participants,
+    });
+
+    navigate(`/projecte/${docRef.id}`);
+  };
+
+return (
+    <div className="register-container">
+        <form className="register-form" onSubmit={handleSubmit}>
+            <h1 className="form-title">Crear Projecte</h1>
+            <div className="form-group">
+                <label className="form-label">
+                    Nom del projecte:
                     <input
-                        id="nom"
-                        className="form-control"
                         type="text"
+                        className="form-control"
                         value={nom}
                         onChange={(e) => setNom(e.target.value)}
                         required
                     />
+                </label>
+            </div>
+
+            <div className="form-group">
+                <strong>Participants:</strong>
+                <div style={{ marginLeft: '1rem' }}>
+                    {usuaris.map((usuari) => (
+                        <label key={usuari.uid} style={{ display: 'block' }}>
+                            <input
+                                type="checkbox"
+                                className="input-field"
+                                checked={participants.includes(usuari.uid)}
+                                disabled={usuari.uid === currentUser.uid}
+                                onChange={() => toggleParticipant(usuari.uid)}
+                            />
+                            {usuari.name} {usuari.uid === currentUser.uid && '(Tu)'}
+                        </label>
+                    ))}
                 </div>
-                <button className="btn-primary" type="submit">
-                    Crear
-                </button>
-            </form>
-        </div>
-    );
+            </div>
+
+            <button type="submit" className="submit-button">
+                Crear projecte
+            </button>
+        </form>
+        <Footer />
+    </div>
+);
 }

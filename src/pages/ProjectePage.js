@@ -10,6 +10,7 @@ import {
     onSnapshot,
 } from 'firebase/firestore';
 import DespesaForm from '../components/DespesaForm';
+import Footer from '../components/Footer';
 
 export default function ProjectePage() {
     // afegeix al principi
@@ -71,9 +72,9 @@ export default function ProjectePage() {
                         <thead className="thead-dark">
                             <tr>
                                 <th>Concepte</th>
-                                <th>Quantia (€)</th>
+                                <th>Quantia</th>
                                 <th>Pagat per</th>
-                                <th>Dividit entre</th>
+                                <th>Perticipants</th>
                                 <th>Accions</th>
                             </tr>
                         </thead>
@@ -128,9 +129,8 @@ export default function ProjectePage() {
                 initialData={editantDespesa}
                 editId={editantDespesa?.id}
             />
-
-
-            
+            <div style={{ height: '100px' }}></div>
+            <Footer />           
         </div>
     );
 }
