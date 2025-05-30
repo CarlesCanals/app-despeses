@@ -179,45 +179,71 @@ export default function DespesaForm({ projectId, onSaved, initialData = null, ed
       </div>
       {/* Pagat per */}
       <div className="form-group">
-        <label className="form-label">
-          Pagat per
-          <select
-            className="form-control"
-            name="pagatPer"
-            value={fields.pagatPer}
-            onChange={handleChange}
-            required
-          >
-            {participantsList.map(p => (
-              <option key={p.uid} value={p.uid}>{p.name}</option>
-            ))}
-          </select>
-        </label>
-      </div>
+  <label className="form-label">
+    Pagat per
+    <select
+      className="form-control"
+      name="pagatPer"
+      value={fields.pagatPer}
+      onChange={handleChange}
+      required
+    >
+      {participantsList.map(p => (
+        <option key={p.uid} value={p.uid}>
+          {p.name}  {/* I aquí, p.name */}
+        </option>
+      ))}
+    </select>
+  </label>
+</div>
+
       {/* Dividir entre */}
       <fieldset className="form-group">
-        <legend className="form-label">Dividir entre</legend>
-        <button type="button" className="btn btn-primary mb-2" onClick={toggleTots}>
-          {totsSeleccionats ? 'Deselecciona tots' : 'Selecciona tots'}
+  <legend className="form-label">Dividir entre</legend>
+  <button
+    type="button"
+    className="btn btn-primary mb-2"
+    onClick={toggleTots}
+  >
+    {totsSeleccionats ? 'Deselecciona tots' : 'Selecciona tots'}
+  </button>
+  <hr />
+  {participantsList.map(p => (
+    <div
+      key={p.uid}
+      className="form-label d-flex align-items-center justify-content-between"
+      style={{ gap: '1rem' }}
+    >
+      <label style={{ flex: 1 }}>
+        <input
+          type="checkbox"
+          checked={fields.divideix.includes(p.uid)}
+          onChange={() => toggle(p.uid)}
+          style={{ marginRight: '0.5rem' }}
+        />
+        {p.name}  {/* Aquí mostrem sempre el name */}
+      </label>
+      {p.manual && (
+        <button
+          type="button"
+          onClick={() => eliminarParticipant(p.uid)}
+          style={{
+            background: 'transparent',
+            color: 'red',
+            border: 'none',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            fontSize: '1.2rem',
+          }}
+          title="Elimina participant"
+        >
+          ❌
         </button>
-        <hr />
-        {participantsList.map(p => (
-          <div key={p.uid} className="form-label d-flex align-items-center justify-content-between" style={{ gap: '1rem' }}>
-            <label style={{ flex: 1 }}>
-              <input
-                type="checkbox"
-                checked={fields.divideix.includes(p.uid)}
-                onChange={() => toggle(p.uid)}
-                style={{ marginRight: '0.5rem' }}
-              />
-              {p.name}
-            </label>
-            {p.manual && (
-              <button type="button" onClick={() => eliminarParticipant(p.uid)} style={{ background: 'transparent', color: 'red', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: '1.2rem' }} title="Elimina participant">❌</button>
-            )}
-          </div>
-        ))}
-      </fieldset>
+      )}
+    </div>
+  ))}
+</fieldset>
+
       {/* Afegeix participant */}
       <div className="form-group mt-3">
         <label className="form-label">
@@ -235,7 +261,7 @@ export default function DespesaForm({ projectId, onSaved, initialData = null, ed
       </div>
       {/* Submit */}
       <div className="form-group mt-4 text-center">
-        <button className="btn btn-success me-2" type="submit">{editId ? 'Actualitzar' : 'Desar'}</button>
+        <button className="btn btn-success me-2" type="submit">{editId ? 'Actualitzar' : 'Desar'}</button>&nbsp;&nbsp;
         {editId && <button type="button" className="btn btn-danger" onClick={() => window.location.reload()}>Cancel·lar</button>}
       </div>
     </form>
